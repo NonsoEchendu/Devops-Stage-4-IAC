@@ -201,7 +201,7 @@ resource "null_resource" "ansible_provisioner" {
   }
 
   provisioner "local-exec" {
-    command = "cd ${path.module}/ansible && ansible-playbook -i inventory/hosts.yml playbook.yml -vvv"
+    command = "cd ${path.module}/ansible && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory/hosts.yml playbook.yml -vvv"
   }
 
   depends_on = [local_file.ansible_inventory, local_file.ansible_vars]
