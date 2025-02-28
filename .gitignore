@@ -4,9 +4,9 @@
 .terraform.lock.hcl
 *.tfvars
 *.tfvars.json
-ansible/inventory/*
-!ansible/inventory/.gitkeep
-ansible/vars/*
+terraform/ansible/inventory/*
+terraform/!ansible/inventory/.gitkeep
+terraform/ansible/vars/*
 !ansible/vars/.gitkeep
 *.retry
 .env
