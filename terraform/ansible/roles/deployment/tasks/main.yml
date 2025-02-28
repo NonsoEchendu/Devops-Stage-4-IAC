@@ -1,0 +1,87 @@
+---
+- name: Create application directory
+  file:
+    path: /opt/todo-app
+    state: directory
+    mode: '0755'
+
+- name: Clone application repository
+  git:
+    repo: "{{ git_repo_url }}"
+    dest: /opt/todo-app
+    version: "{{ git_branch }}"
+    force: yes
+
+- name: Create Traefik directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /opt/todo-app/traefik/config
+    - /opt/todo-app/traefik/acme
+
+- name: Set permissions for ACME directory
+  file:
+    path: /opt/todo-app/traefik/acme
+    mode: '0600'
+    state: directory
+
+- name: Copy Traefik dynamic configuration
+  template:
+    src: templates/dynamic.yaml.j2
+    dest: /opt/todo-app/traefik/config/dynamic.yaml
+    mode: '0644'
+
+- name: Copy updated docker-compose.yml
+  template:
+    src: templates/docker-compose.yml.j2
+    dest: /opt/todo-app/docker-compose.yml
+    mode: '0644'
+
+- name: Update .env file with domain configuration
+  template:
+    src: templates/env.j2
+    dest: /opt/todo-app/.env
+    mode: '0644'
+
+- name: Ensure docker-compose.yml is executable
+  file:
+    path: /opt/todo-app/docker-compose.yml
+    mode: '0644'
+
+- name: Deploy application with Docker Compose
+  community.docker.docker_compose:
+    project_src: /opt/todo-app
+    files:
+      - docker-compose.yml
+    state: present
+    pull: yes
+    remove_orphans: yes
+  register: output
+
+- name: Show Docker Compose output
+  debug:
+    var: output
+
+- name: Wait for Traefik to be ready
+  wait_for:
+    host: localhost
+    port: 80
+    delay: 10
+    timeout: 300
+
+- name: Print success message
+  debug:
+    msg: |
+      Todo application has been successfully deployed!
+      It is now accessible at:
+      
+      Frontend: https://{{ domain_name }}
+      
+      API endpoints:
+      - Auth API: https://auth.{{ domain_name }} or https://{{ domain_name }}/api/auth
+      - Todos API: https://todos.{{ domain_name }} or https://{{ domain_name }}/api/todos
+      - Users API: https://users.{{ domain_name }} or https://{{ domain_name }}/api/users
+      
+      Traefik Dashboard: https://traefik.{{ domain_name }}:8080

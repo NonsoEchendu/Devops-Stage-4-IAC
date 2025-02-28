@@ -1,0 +1,13 @@
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+ansible/inventory/*
+!ansible/inventory/.gitkeep
+ansible/vars/*
+!ansible/vars/.gitkeep
+*.retry
+.env
+*.env

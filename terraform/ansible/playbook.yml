@@ -1,0 +1,10 @@
+---
+- name: Deploy Todo Application
+  hosts: all
+  become: true
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - dependencies
+    - deployment

@@ -1,0 +1,11 @@
+# Rename to terraform.tfvars and modify with your actual values
+
+aws_region       = "us-east-1"
+instance_type    = "t2.micro"
+key_name         = "your-key-name"
+private_key_path = "~/.ssh/your-key.pem"
+domain_name      = "yourdomain.com"
+route53_zone_id  = "Z1234567890ABCDEFGHIJ"
+admin_email      = "your-email@example.com"
+git_repo_url     = "https://github.com/yourusername/todo-app.git"
+git_branch       = "main"
