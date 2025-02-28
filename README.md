@@ -164,6 +164,6 @@ To deploy a different application:
 2. Create a feature branch
 3. Submit a pull request
 
-## License
+## Licenses
 
 [MIT License](LICENSE)
