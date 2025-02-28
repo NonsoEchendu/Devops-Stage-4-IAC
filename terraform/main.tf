@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.aws_region
-}
-
 # create vpc
 resource "aws_vpc" "todo_vpc" {
   cidr_block           = "10.0.0.0/16"
@@ -205,17 +201,4 @@ resource "null_resource" "ansible_provisioner" {
   }
 
   depends_on = [local_file.ansible_inventory, local_file.ansible_vars]
-}
-
-# Output the server IP and domain
-output "server_ip" {
-  value = aws_instance.todo_instance.public_ip
-}
-
-output "domain" {
-  value = var.domain_name
-}
-
-output "application_url" {
-  value = "https://${var.domain_name}"
 }
