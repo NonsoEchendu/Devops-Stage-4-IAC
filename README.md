@@ -56,6 +56,12 @@ This repository provisions and configures:
 
 Create a `terraform.tfvars` file in the terraform directory:
 
+You can copy an example of the `terraform.tfvars.example` file using
+
+```bash
+cp terraform.tfvars.example terraform.tfvars
+```
+
 ```hcl
 aws_region        = "us-east-1"
 vpc_cidr          = "10.0.0.0/16"
